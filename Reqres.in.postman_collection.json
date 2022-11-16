@@ -1,0 +1,771 @@
+{
+	"info": {
+		"_postman_id": "e77bf118-b4a8-4428-a760-1bd3a7c6c494",
+		"name": "Reqres.in",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21755482"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"createdAt\",jsonData.createdAt);\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Status Name is OK\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"pm.test(\"Status Job is OK\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql(\"leader\");\r",
+							"});\r",
+							"pm.test(\"Id Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.id).not.to.be.null;\r",
+							"});\r",
+							"pm.test(\"Validate createdAt Date\", function () {\r",
+							"    const createdAt = jsonData.createdAt;\r",
+							"    const Today = new Date();\r",
+							"    const TodayISO = Today.toISOString().split('T')[0]\r",
+							"    \r",
+							"    // Compare updatedAt format for date (substring first 10 characters?)\r",
+							"    pm.expect(createdAt.substr(0,10)).to.equal(TodayISO);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Page Status Ok\", function () {\r",
+							"    pm.expect(jsonData.page).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Per Page Status Ok\", function () {\r",
+							"    pm.expect(jsonData.per_page).to.eql(6);\r",
+							"});\r",
+							"pm.test(\"Total Status Ok\", function () {\r",
+							"    pm.expect(jsonData.total).to.eql(12);\r",
+							"});\r",
+							"pm.test(\"Total Pages Status Ok\", function () {\r",
+							"    pm.expect(jsonData.total_pages).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Data Id Status Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].id).to.eql(7);\r",
+							"});\r",
+							"pm.test(\"Email Status Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].email).to.eql('michael.lawson@reqres.in');\r",
+							"});\r",
+							"pm.test(\"First Name Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].first_name).to.eql('Michael');\r",
+							"});\r",
+							"pm.test(\"Last Name Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].last_name).to.eql('Lawson');\r",
+							"});\r",
+							"pm.test(\"Image Status OK\", function () {\r",
+							"    pm.expect(jsonData.data[0].avatar).to.eql('https://reqres.in/img/faces/7-image.jpg');\r",
+							"});\r",
+							"pm.test(\"Support Status OK\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql('https://reqres.in/#support-heading');\r",
+							"});\r",
+							"pm.test(\"Support Status OK\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql('To keep ReqRes free, contributions towards server costs are appreciated!');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users?page={{page}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Resource",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.page).to.eql(1);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.per_page).to.eql(6);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.total).to.eql(12);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data[0].id).to.eql(1);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data[0].name).to.eql('cerulean');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data[0].year).to.eql(2000);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data[0].color).to.eql('#98B2D1');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data[0].pantone_value).to.eql('15-4020');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/unknown",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Resource",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Id Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Name Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.data.name).to.eql('fuchsia rose');\r",
+							"});\r",
+							"pm.test(\"Year Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.year).to.eql(2001);\r",
+							"});\r",
+							"pm.test(\"Color Status Ok\", function () {\r",
+							"    pm.expect(jsonData.data.color).to.eql('#C74375');\r",
+							"});\r",
+							"pm.test(\"Pantone Value Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.pantone_value).to.eql('17-2031');\r",
+							"});\r",
+							"pm.test(\"Support Url Status Ok\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql('https://reqres.in/#support-heading');\r",
+							"});\r",
+							"pm.test(\"Support Text Status Ok\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql('To keep ReqRes free, contributions towards server costs are appreciated!');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/unknown/{{id}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"unknown",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data.email).to.eql('janet.weaver@reqres.in');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data.first_name).to.eql('Janet');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data.last_name).to.eql('Weaver');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.data.avatar).to.eql('https://reqres.in/img/faces/2-image.jpg');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql('https://reqres.in/#support-heading');\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql('To keep ReqRes free, contributions towards server costs are appreciated!');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users/{{id}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"Token\",jsonData.token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Id Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(4);\r",
+							"});\r",
+							"pm.test(\"Token Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.token).to.eql('QpwL5tke4Pnpja7X4');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/register",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Name Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.name).to.eql('morpheus');\r",
+							"});\r",
+							"pm.test(\"Job Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.job).to.eql('zion resident');\r",
+							"});\r",
+							"pm.test(\"Date Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.createdAt).not.to.be.null;\r",
+							"});\r",
+							"pm.test(\"Validate updatedAt Date\", function () {\r",
+							"    const updatedAt = jsonData.updatedAt;\r",
+							"    const Today = new Date();\r",
+							"    const TodayISO = Today.toISOString().split('T')[0]\r",
+							"    \r",
+							"    // Compare updatedAt format for date (substring first 10 characters?)\r",
+							"    pm.expect(updatedAt.substr(0,10)).to.equal(TodayISO);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users/{{id}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Unsuccessful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var response = pm.response.body;\r",
+							"pm.environment.set(\"ERROR\", response);\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Error Status is OK\", function () {\r",
+							"    pm.expect(jsonData.error).to.eql('Missing password');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sydney@fife\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/register",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Successful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    pm.expect(jsonData.token).to.eql('QpwL5tke4Pnpja7X4');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/login",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Unsuccessful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"var response = pm.response.body;\r",
+							"pm.environment.set(\"ERROR\", response);\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Error Status is OK\", function () {\r",
+							"    pm.expect(jsonData.error).to.eql('Missing password');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/login",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delayed Response",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Page Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.page).to.eql(1);\r",
+							"});\r",
+							"pm.test(\"Per Pages Status is OK\", function () {\r",
+							"    pm.expect(jsonData.per_page).to.eql(6);\r",
+							"});\r",
+							"pm.test(\"Total Status is OK\", function () {\r",
+							"    pm.expect(jsonData.total).to.eql(12);\r",
+							"});\r",
+							"pm.test(\"Total Pages Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.total_pages).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Id Status is ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].id).to.eql(1);\r",
+							"});\r",
+							"pm.test(\"Email Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].email).to.eql('george.bluth@reqres.in');\r",
+							"});\r",
+							"pm.test(\"First Name Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].first_name).to.eql('George');\r",
+							"});\r",
+							"pm.test(\"Last Name Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.data[0].last_name).to.eql('Bluth');\r",
+							"});\r",
+							"pm.test(\"Avater Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data[0].avatar).to.eql('https://reqres.in/img/faces/1-image.jpg');\r",
+							"});\r",
+							"pm.test(\"Support Url Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql('https://reqres.in/#support-heading');\r",
+							"});\r",
+							"pm.test(\"Support Text Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql('To keep ReqRes free, contributions towards server costs are appreciated!');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users?delay={{delay}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "delay",
+							"value": "{{delay}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Id Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.id).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Email Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.email).to.eql('janet.weaver@reqres.in');\r",
+							"});\r",
+							"pm.test(\"First Name Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.first_name).to.eql('Janet');\r",
+							"});\r",
+							"pm.test(\"Last Name Status is OK\", function () {\r",
+							"    pm.expect(jsonData.data.last_name).to.eql('Weaver');\r",
+							"});\r",
+							"pm.test(\"Avater Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.data.avatar).to.eql('https://reqres.in/img/faces/2-image.jpg');\r",
+							"});\r",
+							"pm.test(\"Support Url Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.support.url).to.eql('https://reqres.in/#support-heading');\r",
+							"});\r",
+							"pm.test(\"Support Text Status is Ok\", function () {\r",
+							"    pm.expect(jsonData.support.text).to.eql('To keep ReqRes free, contributions towards server costs are appreciated!');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}api/users/{{id}}",
+					"host": [
+						"{{BaseUrl}}api"
+					],
+					"path": [
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseUrl",
+			"value": "https://reqres.in/",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "2",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,6 @@
+newman run “Restful_API_Group_Study.postman_collection.json” -e Rest_API_Groupstudy.postman_environment.json
+
+newman run “Collection Link” -e “Path”/EnvironmentName.json -r cli,html
+newman run “Collection Link” -e “Path”/EnvironmentName.json -r cli,htmlextra
+
+newman run “Restful_API_Group_Study.postman_collection.json” -e Rest_API_Groupstudy.postman_environment.json -r cli,htmlextra
